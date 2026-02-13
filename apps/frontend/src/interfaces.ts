@@ -3,4 +3,13 @@ interface UseGoogleAuthHook {
 	signOut: () => Promise<void>;
 }
 
-export type { UseGoogleAuthHook };
+interface User {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	profilePicture: string;
+	createdAt: string;
+}
+
+export type { UseGoogleAuthHook, User };
