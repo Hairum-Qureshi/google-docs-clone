@@ -1,11 +1,24 @@
+import { useState } from "react";
+import Editor from "../components/Editor";
+import InviteModal from "../components/InviteModal";
+
 export default function Document() {
+	// TODO - make the document title editable
+	// TODO - make the invite button open a modal with sharing options
+	// TODO - make the share button open a modal with sharing options and link to the document
+	// TODO - make the user profile pictures dynamic based on the users that are currently viewing/editing the document (make sure not to show your profile picture)
+	// TODO - make the document content dynamic based on the document ID in the URL and update in real-time as other users edit the document
+	// TODO - implement real-time collaboration using WebSockets to sync document changes between users
+
+	const [showModal, setModalVisibility] = useState(false);
+
+
 	return (
 		<div className="min-h-screen max-h-auto bg-slate-100 p-3">
 			<div className="flex items-center justify-between w-full mb-5">
 				<div className="w-full flex items-center mb-5 justify-start text-blue-700 space-x-3 text-3xl font-semibold">
 					<h1>Document Title</h1>
 				</div>
-
 				<div className="w-full flex items-center mb-5 justify-end space-x-3">
 					<div className="flex items-center">
 						<img
@@ -32,12 +45,18 @@ export default function Document() {
 					<button className="bg-blue-500 text-white py-2 px-6 rounded hover:cursor-pointer">
 						Share
 					</button>
-					<button className="bg-blue-800 text-white py-2 px-6 rounded hover:cursor-pointer">
+					<button
+						className="bg-blue-800 text-white py-2 px-6 rounded hover:cursor-pointer"
+						onClick={() => setModalVisibility(true)}
+					>
 						Invite
 					</button>
 				</div>
 			</div>
-			<div className="m-auto h-screen w-7/12 border border-slate-300 bg-white py-5"></div>
+			<div className="m-auto h-screen w-7/12 border border-slate-300 bg-white py-5">
+				{showModal && <InviteModal setModalVisibility = {setModalVisibility} />}
+				<Editor />
+			</div>
 		</div>
 	);
 }
