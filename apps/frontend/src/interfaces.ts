@@ -12,4 +12,12 @@ interface User {
 	createdAt: string;
 }
 
-export type { UseGoogleAuthHook, User };
+interface Document {
+	_id: string;
+	title: string;
+	authorUID: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export type { UseGoogleAuthHook, User, Document };
