@@ -5,7 +5,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { UseGoogleAuthHook } from "../interfaces";
 import { auth, googleProvider } from "../config/firebase";
 
-
 export default function useGoogleAuth(): UseGoogleAuthHook {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -35,7 +34,7 @@ export default function useGoogleAuth(): UseGoogleAuthHook {
 
 		await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
 
-		navigate("/profile");
+		navigate("/");
 	};
 
 	const signOut = async () => {
