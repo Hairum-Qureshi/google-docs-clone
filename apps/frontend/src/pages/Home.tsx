@@ -1,16 +1,15 @@
 import useGoogleAuth from "../hooks/useGoogleAuth";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import DisplayDocument from "../components/DisplayDocument";
-import { Link, useNavigate } from "react-router-dom";
-import ObjectID from "bson-objectid";
+import { Link } from "react-router-dom";
+import useDocument from "../hooks/useDocument";
+import type { Document } from "../interfaces";
 
 export default function Home() {
 	const { googleSignInMutation } = useGoogleAuth();
 	const { data: currUserData } = useCurrentUser();
-	const navigate = useNavigate();
-	const documents: any[] = [];
-
-	// TODO - have 'create document' generate a unique ID
+	const { createDocumentMutate, allDocuments } = useDocument();
+	// TODO - have 'create document' generate a unique ID from the backend (right now, it's using a static placeholder ID)
 
 	return (
 		<div>
@@ -36,9 +35,7 @@ export default function Home() {
 						) : (
 							<button
 								className="group relative flex items-center gap-3 bg-white text-blue-900 px-8 py-3.5 rounded-lg font-medium hover:bg-slate-100 transition-all duration-300 shadow-[0_0_20px_rgba(56,189,248,0.3)] hover:shadow-[0_0_30px_rgba(56,189,248,0.5)] border border-sky-500 hover:cursor-pointer mt-10"
-								onClick={() =>
-									navigate(`/document/${new ObjectID().toString()}`)
-								}
+								onClick={() => createDocumentMutate()}
 							>
 								Create Document
 							</button>
@@ -50,16 +47,18 @@ export default function Home() {
 				<h1 className="text-4xl font-semibold m-6 text-blue-600">
 					My existing documents
 				</h1>
-				{!documents.length ? (
+				{!allDocuments?.length ? (
 					<p className="flex items-center justify-center mt-20 text-xl text-sky-600">
 						No documents found. Create a new document to get started!
 					</p>
 				) : (
-					<div className="grid grid-cols-5 gap-5 space-y-10 my-10 justify-items-center">
-						<Link to="/document/123">
-							<DisplayDocument />
-						</Link>
-					</div>
+					allDocuments?.map((document: Document) => (
+						<div className="inline-block m-4" key={document._id}>
+							<Link to={`/document/${document._id}`} key={document._id}>
+								<DisplayDocument title={document.title} />
+							</Link>
+						</div>
+					))
 				)}
 			</div>
 		</div>
