@@ -22,6 +22,6 @@ export class DocumentService {
       .find({
         $or: [{ authorUID: userID }, { collaborators: { $in: [userID] } }],
       })
-      .select('--content --collaborators');
+      .select('-content -collaborators -isPublic -__v');
   }
 }
