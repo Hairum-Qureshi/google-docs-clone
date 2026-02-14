@@ -2,22 +2,40 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Toolbar from "./Toolbar";
+import useAutoSave from "../hooks/useAutoSave";
+import useDocument from "../hooks/useDocument";
+import { useEffect } from "react";
 
 export default function Editor() {
+	const { autosave } = useAutoSave();
+	const { document } = useDocument();
+
 	const editor = useEditor({
 		extensions: [StarterKit, Underline],
 		editorProps: {
 			attributes: {
 				class: "focus:outline-none flex-1 h-full"
 			}
+		},
+		onUpdate({ editor }) {
+			autosave(JSON.stringify(editor.getJSON()), "content");
 		}
 	});
 
 	if (!editor) return null;
 
+	useEffect(() => {
+		try {
+			if (!document?.content) return;
+			editor.commands.setContent(JSON.parse(document.content));
+		} catch (error) {
+			console.error("Error parsing document content:", error);
+		}
+	}, [document]);
+
 	return (
 		<div className="w-full">
-			<div className="-mt-5">
+			<div className="-mt-2 flex justify-center">
 				<Toolbar editor={editor} />
 			</div>
 			<div
