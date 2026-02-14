@@ -15,4 +15,13 @@ export class DocumentService {
     await newDoc.save();
     return newDoc._id;
   }
+
+  async getAllDocuments(userID: string) {
+    // this accounts for documents other users have added them to as a collaborator, as well as documents they have created themselves
+    return await this.docModel
+      .find({
+        $or: [{ authorUID: userID }, { collaborators: { $in: [userID] } }],
+      })
+      .select('--content --collaborators');
+  }
 }
