@@ -23,7 +23,7 @@ export class DocumentService {
       .find({
         $or: [{ authorUID: userID }, { collaborators: { $in: [userID] } }],
       })
-      .select('-content -collaborators -isPublic -__v');
+      .select('-collaborators -isPublic -__v');
   }
 
   async getDocumentByID(docID: string) {
@@ -33,6 +33,7 @@ export class DocumentService {
 
   async updateDocumentContent(docID: string, updateData: UpdateDocument) {
     // TODO - add validation to ensure that the user has access to the document before allowing them to update it
+
     return await this.docModel.findByIdAndUpdate(docID, updateData, {
       new: true,
     });
