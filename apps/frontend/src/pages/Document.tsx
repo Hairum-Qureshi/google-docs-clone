@@ -8,10 +8,10 @@ export default function Document() {
 	// TODO - make the share button open a modal with sharing options and link to the document
 	// TODO - make the user profile pictures dynamic based on the users that are currently viewing/editing the document (make sure not to show your profile picture)
 	// TODO - make the document content dynamic based on the document ID in the URL and update in real-time as other users edit the document
+    // TODO - add a delete document option for the author of the document, and make sure to remove access for all collaborators when a document is deleted
 	// TODO - implement real-time collaboration using WebSockets to sync document changes between users
 
 	const [showModal, setModalVisibility] = useState(false);
-
 
 	return (
 		<div className="min-h-screen max-h-auto bg-slate-100 p-3">
