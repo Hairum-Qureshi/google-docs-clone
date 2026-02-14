@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Doc, DocDocument } from 'src/schemas/Document';
+import { UpdateDocument } from 'src/DTOs/UpdateDocument.dto';
 
 @Injectable()
 export class DocumentService {
@@ -23,5 +24,17 @@ export class DocumentService {
         $or: [{ authorUID: userID }, { collaborators: { $in: [userID] } }],
       })
       .select('-content -collaborators -isPublic -__v');
+  }
+
+  async getDocumentByID(docID: string) {
+    const document = await this.docModel.findById(docID);
+    return document;
+  }
+
+  async updateDocumentContent(docID: string, updateData: UpdateDocument) {
+    // TODO - add validation to ensure that the user has access to the document before allowing them to update it
+    return await this.docModel.findByIdAndUpdate(docID, updateData, {
+      new: true,
+    });
   }
 }
