@@ -30,6 +30,7 @@ export default function useDocument(): UseDocumentHook {
 		},
 		onSuccess: response => {
 			if (!response) return;
+			queryClient.invalidateQueries({ queryKey: ["documents"] });
 			navigate(`/document/${response.data}`);
 		}
 	});
