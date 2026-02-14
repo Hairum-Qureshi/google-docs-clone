@@ -16,6 +16,7 @@ interface Document {
 	_id: string;
 	title: string;
 	authorUID: string;
+	content: string;
 	createdAt: string;
 	updatedAt: string;
 }
