@@ -5,6 +5,7 @@ import NotFound from "../pages/NotFound";
 import "../css/index.css";
 import Navbar from "./Navbar";
 import MyDocuments from "../pages/MyDocuments";
+import Document from "../pages/Document";
 
 export default function App() {
 	return (
@@ -14,6 +15,7 @@ export default function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/my-documents" element={<MyDocuments />} />
+				<Route path="/:id/document" element={<Document />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
