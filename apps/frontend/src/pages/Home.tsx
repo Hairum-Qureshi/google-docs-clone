@@ -1,5 +1,3 @@
-import activityGif from "../assets/live-status.gif";
-
 export default function Home() {
 	return (
 		<div className="min-h-screen bg-zinc-900 text-white relative overflow-hidden flex flex-col font-sans">
@@ -15,9 +13,12 @@ export default function Home() {
 					<h3 className="text-4xl mt-5 text-zinc-500 font-sans">
 						A hub for late-night writers
 					</h3>
-					<div className="flex items-center justify-center">
-						<img src={activityGif} alt="Activity gif" className="w-12 h-16" />
-						<h3 className="text-xl text-slate-400 font-sans -ml-2">
+					<div className="flex items-center justify-center mt-4">
+						<span className="relative flex size-3 mr-2">
+							<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+							<span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
+						</span>
+						<h3 className="text-xl text-slate-400 font-sans">
 							<span className="text-green-400">
 								<strong>10</strong>
 							</span>{" "}
