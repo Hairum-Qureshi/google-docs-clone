@@ -4,7 +4,7 @@ export default function TipTapEditor({ editor }: { editor: Editor | null }) {
 	return (
 		<div className="w-full">
 			<div
-				className="leading-5 h-72 overflow-y-auto
+				className="leading-5 h-screen overflow-y-auto
                 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-4
                 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-4
                 [&_p]:mb-2
