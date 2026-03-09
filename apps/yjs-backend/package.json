@@ -1,0 +1,13 @@
+{
+	"name": "yjs-backend",
+	"private": true,
+	"scripts": {
+		"dev": "tsx watch collab.ts"
+	},
+	"dependencies": {
+		"@hocuspocus/server": "^2.0.0"
+	},
+	"devDependencies": {
+		"tsx": "^4.21.0"
+	}
+}
