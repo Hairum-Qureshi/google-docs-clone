@@ -12,4 +12,6 @@ const server = new Hocuspocus({
 });
 
 server.listen();
-console.log(`Hocuspocus server running at ws://127.0.0.1:${PORT}`);
+console.log(
+	`Hocuspocus server and websocket server running successfully on port ${PORT}!`
+);
