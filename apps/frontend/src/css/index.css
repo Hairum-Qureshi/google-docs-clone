@@ -1,29 +1,36 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Give a remote user a caret */
+/* Ensure the editor content area can show overflowing labels */
+.ProseMirror {
+	outline: none;
+	padding-top: 20px; /* Gives the label room to breathe on line 1 */
+}
+
+/* The vertical line */
 .collaboration-carets__caret {
-	border-left: 1px solid #0d0d0d;
-	border-right: 1px solid #0d0d0d;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	border-left: 1.5px solid;
+	border-right: 1.5px solid;
 	margin-left: -1px;
 	margin-right: -1px;
 	pointer-events: none;
-	position: relative;
-	word-break: normal;
+	height: 1.2em;
 }
 
-/* Render the username above the caret */
+/* The Name Tag */
 .collaboration-carets__label {
-	border-radius: 3px 3px 3px 0;
-	color: #0d0d0d;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 600;
-	left: -1px;
-	line-height: normal;
-	padding: 0.1rem 0.3rem;
 	position: absolute;
-	top: -1.4em;
-	user-select: none;
+	top: -1.2em; /* This pushes it ABOVE the line */
+	left: -1px;
+	font-size: 12px;
+	line-height: 1;
+	font-weight: 600;
+	padding: 2px 4px;
+	border-radius: 3px 3px 3px 0;
 	white-space: nowrap;
+	color: #fff;
+	user-select: none;
 }
