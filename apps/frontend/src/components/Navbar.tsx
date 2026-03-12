@@ -10,8 +10,6 @@ export default function Navbar() {
 	const [showDropDownUsers, setShowDropDownUsers] = useState(false);
 	const location = useLocation();
 
-	// ! Fix width for user dropdown and make it dynamic based on the number of users writing. Also add a scroll if there are too many users writing
-
 	return (
 		<div className="bg-zinc-900 text-white pt-4">
 			<div className="container mx-auto flex items-center justify-between">
@@ -41,7 +39,7 @@ export default function Navbar() {
 							</div>
 						</div>
 						{showDropDownUsers && (
-							<div className="w-11/12 text-white wrap-break-word border border-zinc-500 rounded-md p-1 absolute mt-10">
+							<div className="w-11/12 text-white wrap-break-word border border-zinc-500 rounded-md p-1 absolute mt-10 bg-zinc-800">
 								<div className="space-y-3">
 									<p className="px-2 text-sm">
 										{currUserData
