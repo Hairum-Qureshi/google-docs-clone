@@ -35,7 +35,7 @@ export default function useGoogleAuth(): UseGoogleAuthHook {
 
 		await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
 
-		navigate("/profile");
+		navigate("/");
 	};
 
 	const signOut = async () => {
