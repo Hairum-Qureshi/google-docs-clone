@@ -15,7 +15,7 @@ export default function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/my-documents" element={<MyDocuments />} />
-				<Route path="/:id/document" element={<Document />} />
+				<Route path="/:docID/document" element={<Document />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
