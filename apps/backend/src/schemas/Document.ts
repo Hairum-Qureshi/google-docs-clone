@@ -9,8 +9,8 @@ export class Doc {
   @Prop({ type: String, required: true })
   title: string;
 
-  @Prop({ type: String })
-  content: string;
+  @Prop({ type: Buffer })
+  content: Buffer;
 
   @Prop({ type: [String], default: [], ref: 'User' })
   collaborators: string[];
