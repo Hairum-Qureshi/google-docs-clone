@@ -3,12 +3,16 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import useGoogleAuth from "../hooks/useGoogleAuth";
 import { useState } from "react";
 import { FaUserPlus } from "react-icons/fa6";
+import useDocument from "../hooks/useDocument";
+import { modalStore } from "../store/modalStore";
 
 export default function Navbar() {
 	const { data: currUserData } = useCurrentUser();
 	const { googleSignInMutation } = useGoogleAuth();
 	const [showDropDownUsers, setShowDropDownUsers] = useState(false);
 	const location = useLocation();
+	const { createDocumentMutate } = useDocument();
+	const { setShowModal } = modalStore();
 
 	return (
 		<div className="bg-zinc-900 text-white pt-4">
@@ -30,7 +34,10 @@ export default function Navbar() {
 								<p>10 Writing</p>
 							</div>
 							<div>
-								<button className="flex items-center border border-blue-600 rounded-md px-3 py-1 bg-blue-800 hover:cursor-pointer hover:bg-blue-700 transition-colors duration-300">
+								<button
+									className="flex items-center border border-blue-600 rounded-md px-3 py-1 bg-blue-800 hover:cursor-pointer hover:bg-blue-700 transition-colors duration-300"
+									onClick={() => setShowModal(true)}
+								>
 									<span className="text-xl mr-2">
 										<FaUserPlus />
 									</span>{" "}
@@ -89,7 +96,10 @@ export default function Navbar() {
 								Sign In
 							</button>
 						) : (
-							<button className="px-3 py-1.5 bg-blue-600 rounded hover:cursor-pointer hover:bg-blue-700 transition-colors duration-300">
+							<button
+								className="px-3 py-1.5 bg-blue-600 rounded hover:cursor-pointer hover:bg-blue-700 transition-colors duration-300"
+								onClick={() => createDocumentMutate()}
+							>
 								New Document
 							</button>
 						)}
