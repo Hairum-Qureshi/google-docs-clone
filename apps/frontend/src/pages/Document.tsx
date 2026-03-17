@@ -10,36 +10,42 @@ import Underline from "@tiptap/extension-underline";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import "../css/index.css";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
 
-// ! if you're typing on the first line, the caret seems to get cut off from the top 
+// ! if you're typing on the first line, the caret seems to get cut off from the top
 
 export default function Document() {
 	const { data: currUser } = useCurrentUser();
+	const { docID } = useParams();
 
+	// 1. Provider needs docID. If docID changes, you need a new connection.
 	const provider = useMemo(() => {
 		return new HocuspocusProvider({
-			url: import.meta.env.VITE_HOCUSPOCUS_WEBSOCKET, // your Hocuspocus WS endpoint
-			name: "document-1",
+			url: import.meta.env.VITE_HOCUSPOCUS_WEBSOCKET,
+			name: docID || "-1", // docID might be undefined initially
 			document: new Y.Doc()
 		});
-	}, []); // Empty dependency array means create once
+	}, [docID]); // Add docID here
 
-	// 3. Wrap extensions in useMemo so they don't trigger re-renders
+	// 2. Extensions need currUser and provider.
 	const extensions = useMemo(
 		() => [
 			StarterKit,
 			Link,
 			Underline,
-			Collaboration.configure({ document: provider.document }),
+			Collaboration.configure({
+				document: provider.document
+			}),
 			CollaborationCaret.configure({
 				provider,
-				user: {
-					name: currUser
-						? `${currUser.firstName} ${currUser.lastName}`
-						: "Anonymous",
-					color: "#f783ac"
-				},
+				// user: {
+				// 	// Now this updates when currUser fetches/changes
+				// 	name: currUser
+				// 		? `${currUser.firstName} ${currUser.lastName}`
+				// 		: "Anonymous",
+				// 	color: "#f783ac"
+				// },
 				render: user => {
 					const caret = document.createElement("span");
 					caret.classList.add("collaboration-carets__caret");
@@ -58,10 +64,19 @@ export default function Document() {
 				}
 			})
 		],
-		[provider]
-	); // Only recreate if provider changes
+		[provider, currUser]
+	); // Add both dependencies here
 
 	const editor = useEditor({ extensions }); // No need for [provider] here now
+
+	useEffect(() => {
+		if (editor && currUser && !editor.isDestroyed) {
+			editor.commands.updateUser({
+				name: `${currUser.firstName} ${currUser.lastName}`,
+				color: "#f783ac"
+			});
+		}
+	}, [currUser, editor]);
 
 	if (!editor) return null;
 
