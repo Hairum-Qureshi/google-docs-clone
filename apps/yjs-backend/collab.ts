@@ -17,6 +17,7 @@ const server = new Hocuspocus({
 		console.log("Client disconnected");
 	},
 	extensions: [
+		// Database extension cast to 'any' to avoid type mismatch between @hocuspocus packages
 		new Database({
 			fetch: async ({ documentName }: { documentName: string }) => {
 				try {
@@ -36,21 +37,23 @@ const server = new Hocuspocus({
 					return null; // Start fresh if 404 or error
 				}
 			},
-			store: async ({
-				documentName,
-				state
-			}: {
-				documentName: string; // this is the document ID that's called when your initialize 'name' in the HocuspocusProvider on the frontend
-				state: Uint8Array;
-			}) => {
-				await axios.patch(
-					`${process.env.NEST_BACKEND}/api/document/${documentName}/update-content`,
-					{
-						state: Buffer.from(state).toString("base64") // Send as base64 over HTTP
-					}
-				);
+			store: async ({ documentName, state }) => {
+				try {
+					await axios.patch(
+						`${process.env.NEST_BACKEND}/api/document/${documentName}/update-content`,
+						state, // Send the raw Uint8Array directly, NOT an object
+						{
+							headers: {
+								"Content-Type": "application/octet-stream" // Tells NestJS this is binary
+							}
+						}
+					);
+				} catch (error: any) {
+					// Log the actual error message from NestJS to debug the 500
+					console.error("Save Error:", error.response?.data || error.message);
+				}
 			}
-		})
+		}) as unknown as any
 	]
 });
 
