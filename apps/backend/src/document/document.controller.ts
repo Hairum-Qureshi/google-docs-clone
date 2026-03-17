@@ -11,7 +11,6 @@ import { DocumentService } from './document.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/currentUser.decorator';
 import * as types from 'src/types';
-import { UpdateDocument } from 'src/DTOs/UpdateDocument.dto';
 
 @Controller('api/document')
 export class DocumentController {
@@ -46,14 +45,18 @@ export class DocumentController {
     return this.documentService.updateDocumentTitle(docID, title);
   }
 
+  // TODO - may need to figure out how to protect these (despite them being invoked through yjs-backend)
   @Patch('/:docID/update-content')
-  @UseGuards(AuthGuard())
-  updateDocumentContent(
+  async updateDocumentContent(
     @Param('docID') docID: string,
-    @Body('content')
-    content: string,
+    @Body() state: Buffer,
   ) {
-    // TODO - add validation to ensure that the user has access to the document before allowing them to update it
-    return this.documentService.updateDocumentContent(docID, content);
+    return this.documentService.updateDocumentContent(docID, state);
+  }
+
+  @Get('/:docID/binary')
+  async getDocumentBinary(@Param('docID') docID: string) {
+    const doc = await this.documentService.getDocumentByID(docID);
+    return doc?.content;
   }
 }

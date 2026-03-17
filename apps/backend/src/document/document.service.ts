@@ -40,13 +40,11 @@ export class DocumentService {
     );
   }
 
-  async updateDocumentContent(docID: string, content: string) {
+  async updateDocumentContent(docID: string, content: Buffer) {
     return await this.docModel.findByIdAndUpdate(
       docID,
-      { content },
-      {
-        new: true,
-      },
+      { content }, // 'content' in your Schema should be Type: Buffer
+      { new: true },
     );
   }
 }
