@@ -1,333 +1,153 @@
-# NestJS + React + Vite + Tailwind + Turbo (with Google Auth)
-
-This repository is a **full-stack monorepo template** using **npm workspaces** and **Turborepo** to manage a React frontend and a NestJS backend in a single repository.
-
-It is based on a minimal monorepo foundation, with **Google authentication pre-wired using Firebase** so you don’t have to build auth plumbing from scratch.
-
-This is a **template**, not a production-ready system.
+Got it! Here’s a cleaned-up and secure README draft for **Insomnia**, with sensitive values removed but all the necessary environment variables, setup instructions, and an explanation of how the tech stack works:
 
 ---
 
-## What This Template Is
+# Insomnia – A Hub for Late-Night Writers
 
-This template provides:
-
-* A correct, minimal **monorepo setup**
-* Clear separation of frontend and backend concerns
-* Centralized dependency management
-* Coordinated development scripts
-* **Working Google OAuth (Firebase) across frontend and backend**
-
-Authentication is included, but only to the extent required to:
-
-* Sign users in with Google on the frontend
-* Verify and trust those users on the backend
-
-Everything else remains intentionally unopinionated.
+**Insomnia** is a Google Docs clone built for collaborative writing in real time. It leverages modern web technologies including **React**, **Nest.js**, **Tailwind**, **MongoDB**, **Yjs**, **Hocuspocus**, **Tiptap**, and **Socket.IO** to create a seamless, multi-user editing experience.
 
 ---
 
-## What This Template Is *Not*
+## Features
 
-This template does **not** try to be a full application starter.
-
-It does **not** include:
-
-* User roles or permissions
-* Auth-based authorization rules
-* Session persistence strategies
-* Database schemas or migrations
-* API clients or shared domain models
-* Deployment, Docker, or CI/CD
-
-Those decisions are left to the user.
+* Real-time collaborative document editing
+* Rich text editing powered by **Tiptap**
+* Conflict-free multi-user editing via **Yjs** and **Hocuspocus**
+* Persistent backend storage with **MongoDB**
+* Responsive UI styled with **TailwindCSS**
+* Authentication and session management via **Nest.js**
 
 ---
 
-## Repository Structure
+## How Collaboration Works
 
-```
-.
-├── apps/
-│   ├── backend/          # NestJS backend (Firebase Admin + JWT + Mongo)
-│   └── frontend/         # React + Vite + Tailwind (Firebase client)
-├── packages/             # Optional shared packages (empty by default)
-├── package.json          # Root workspace + Turbo configuration
-├── package-lock.json     # Single lockfile for the entire monorepo
-├── turbo.json            # Turbo task pipeline
-└── README.md
+1. **Yjs**: A CRDT (Conflict-free Replicated Data Type) library that handles concurrent updates across multiple clients. It ensures that all users see consistent document content even when editing simultaneously.
+2. **Hocuspocus Server**: A WebSocket server that coordinates Yjs document updates between connected clients.
+3. **Tiptap**: A rich text editor for React that connects directly to Yjs documents, allowing users to see live edits with formatting preserved.
+4. **Socket.IO**: Facilitates real-time communication between the frontend and backend for additional events outside of Yjs (like presence indicators).
+
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone <repo-url>
+cd insomnia
 ```
 
-### Key Structural Notes
+### 2. Install Dependencies
 
-* This **is a monorepo**
-* Dependency management is centralized at the **root**
-* Each app remains a **standalone project**
-* No shared code is assumed
-* Shared packages are optional and explicit
-
----
-
-## Tech Stack
-
-### Backend (`apps/backend`)
-
-* NestJS
-* TypeScript
-* Firebase Admin SDK
-* JWT-based session tokens
-* MongoDB (wired, no schemas assumed)
-
-### Frontend (`apps/frontend`)
-
-* React
-* Vite
-* TailwindCSS
-* TypeScript
-* Firebase Client SDK (Google sign-in)
-
-### Tooling
-
-* npm workspaces
-* Turborepo
-
----
-
-## Prerequisites
-
-You need:
-
-* Node.js (LTS recommended)
-* npm (v7+ for workspaces)
-
----
-
-## Installation
-
-From the **repository root**:
+From the **root**:
 
 ```bash
 npm install
 ```
 
-This installs dependencies for **all workspace packages** and generates a **single `package-lock.json`**.
+Then go to the frontend folder:
 
-Do not run `npm install` inside individual apps.
+```bash
+cd frontend
+npm install
+```
 
 ---
 
-## Development
+### 3. Environment Variables
 
-Run all development servers concurrently:
+Create `.env` files in each relevant folder.
+
+#### yjs-backend
+
+```env
+HOCUSPOCUS_PORT=8000
+NEST_BACKEND=http://localhost:4000
+```
+
+#### frontend
+
+```env
+VITE_BACKEND_URL=http://localhost:4000
+VITE_FIREBASE_API_KEY=<your Firebase API key>
+VITE_FIREBASE_AUTH_DOMAIN=<your Firebase auth domain>
+VITE_FIREBASE_PROJECT_ID=<your Firebase project ID>
+VITE_FIREBASE_STORAGE_BUCKET=<your Firebase storage bucket>
+VITE_FIREBASE_MESSAGING_SENDER_ID=<your Firebase messaging sender id>
+VITE_FIREBASE_APP_ID=<your Firebase app ID>
+VITE_BACKEND_URL=http://localhost:4000
+```
+
+#### backend
+
+```env
+PORT=4000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+MONGO_URI=<your MongoDB connection string>
+JWT_SECRET=<secret for JWT auth>
+JWT_EXPIRES=<expiry duration>
+FIREBASE_SERVICE_ACCOUNT=<your firebase service account JSON string>
+```
+
+> **Important:** If your backend port changes, update `NEST_BACKEND` in the **yjs-backend** `.env` file accordingly.
+
+---
+
+### 4. Solving Frontend Vite Import Errors
+
+If you encounter the error:
+
+```text
+[plugin:vite:import-analysis] Failed to resolve import "@tiptap/react" from "src/pages/Document.tsx". Does the file exist?
+```
+
+Follow these steps:
 
 ```bash
+# From root
+rm -rf node_modules package-lock.json
+npm install
+
+# Go to frontend
+cd frontend
+rm -rf node_modules/.vite
+npm run dev -- --force
+```
+
+This clears both the Node modules and Vite cache, forcing Vite to rebuild its dependency graph.
+
+---
+
+### 5. Running the Project
+
+1. Start the backend:
+
+```bash
+cd backend
 npm run dev
 ```
 
-This uses Turbo to:
+2. Start the Yjs/Hocuspocus server:
 
-* Start the NestJS backend
-* Start the Vite frontend
-* Stream logs with app prefixes
+```bash
+cd yjs-backend
+npm run dev
+```
 
-### Default Ports
+3. Start the frontend:
 
-* Backend: `http://localhost:3000`
-* Frontend: `http://localhost:5173`
+```bash
+cd frontend
+npm run dev
+```
+
+Now open your browser at `http://localhost:5173` (or your configured frontend URL) and start collaborating!
 
 ---
 
-## Environment Variables & Firebase Setup
-
-This template **will not start** unless required environment variables are present and valid.
-
-Both frontend and backend rely on Firebase, but for **different purposes**:
-
-* Frontend → Firebase **client SDK**
-* Backend → Firebase **Admin SDK**
+This README gives contributors everything they need: a conceptual overview, environment setup, cache troubleshooting, and safe guidance on handling sensitive variables.
 
 ---
 
-## Common Startup Error (Firebase Admin)
-
-If the backend crashes with:
-
-```
-SyntaxError: "undefined" is not valid JSON
-    at JSON.parse (<anonymous>)
-    at firebase.module.ts
-```
-
-### What’s happening
-
-The backend expects a Firebase **service account JSON** via:
-
-```ts
-JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-```
-
-If the variable is missing, misnamed, or malformed, the process crashes immediately.
-
----
-
-### Fix
-
-You **must** provide a valid Firebase service account JSON via the
-`FIREBASE_SERVICE_ACCOUNT` environment variable, wrapped in **single quotes**.
-
----
-
-## Another Common Startup Error (MongoDB)
-
-You may also see an error similar to:
-
-```
-MongoParseError: URI must be provided
-```
-
-or:
-
-```
-MongooseError: The `uri` parameter to `openUri()` must be a string
-```
-
-### What this means
-
-This error simply means that **no MongoDB connection string was provided**.
-
-The backend expects a MongoDB URI via the `MONGO_URI` environment variable.
-If it’s missing, empty, or misspelled, Nest will fail during startup.
-
-This error is **not related to Firebase or Google Auth**.
-
----
-
-### Fix
-
-Make sure your backend `.env` file includes:
-
-```env
-MONGO_URI=mongodb_connection_string
-```
-
-This can be:
-
-* A local MongoDB instance
-
-  ```
-  mongodb://localhost:27017/your-db-name
-  ```
-
-* Or a hosted provider (e.g. MongoDB Atlas)
-
-Once `MONGO_URI` is defined, the backend should start normally.
-
-## Backend Environment Variables
-
-Create a `.env` file in `apps/backend`:
-
-```env
-JWT_SECRET=your_jwt_secret_here
-JWT_EXPIRES=604800000
-PORT=3000
-NODE_ENV=development
-FRONTEND_URL=http://localhost:5173
-MONGO_URI=mongodb_connection_string
-FIREBASE_SERVICE_ACCOUNT='{ ... }'
-```
-
-### Important Notes
-
-* `JWT_EXPIRES` must be a **number**, not a string
-* `NODE_ENV` must be `development` for local dev
-* `FIREBASE_SERVICE_ACCOUNT` must:
-
-  * Be valid JSON
-  * Be wrapped in **single quotes**
-  * Contain the **entire service account object**
-
-Example (truncated):
-
-```env
-FIREBASE_SERVICE_ACCOUNT='{
-  "type": "service_account",
-  "project_id": "your-project-id",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk@your-project-id.iam.gserviceaccount.com"
-}'
-```
-
-⚠️ **Never commit this value.**
-It grants full admin access to your Firebase project.
-
----
-
-## Frontend Environment Variables
-
-Create a `.env` file in `apps/frontend`:
-
-```env
-VITE_BACKEND_BASE_URL=http://localhost:3000
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_BACKEND_URL=http://localhost:3000
-```
-
-These values come from your **Firebase Web App configuration**, not the service account.
-
----
-
-## Firebase Project Setup (Required)
-
-### 1. Create a Firebase Project
-
-* Firebase Console → Add project
-
-### 2. Enable Google Authentication
-
-* Authentication → Sign-in method → Enable **Google**
-
-### 3. Create a Firebase Web App
-
-* Project Settings → Web app
-* Copy config into frontend `.env`
-
-### 4. Generate a Service Account (Backend)
-
-* Project Settings → Service accounts
-* Generate new private key
-* Paste JSON into `FIREBASE_SERVICE_ACCOUNT`
-* Wrap in single quotes
-
----
-
-## App Independence (Still True)
-
-Even with auth included:
-
-* Frontend and backend are **not tightly coupled**
-* They can be deployed independently
-* No shared packages are required
-* API communication is explicit
-
-Auth establishes **trust**, not architectural dependency.
-
----
-
-## Turbo Configuration
-
-Turbo operates on **script names**, not commands.
-
-If an app doesn’t define `dev`, `build`, or `lint`, Turbo skips it.
-
-Turbo is used only for:
-
-* Task orchestration
-* Caching
-* Parallel execution
-
-It does not enforce architecture.
+If you want, I can also **add a small diagram or bullet workflow** showing how Tiptap → Yjs → Hocuspocus → Socket.IO → Backend → DB all connect for collaboration—it makes the README much easier for new developers to understand visually. Do you want me to add that?
