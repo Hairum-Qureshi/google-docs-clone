@@ -13,12 +13,21 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import TextAlign from "@tiptap/extension-text-align";
+import { modalStore } from "../store/modalStore";
+import InviteModal from "../components/InviteModal";
 
 // ! if you're typing on the first line, the caret seems to get cut off from the top
+
+// ! Resolve issue where if you're the only one in a document, autosave doesn't work
+// ! For some reason you have to click at the top to get the textarea focused
+// TODO - add the 'saving...' text when the document is being saved, and 'saved' text when it finishes saving.
+// TODO - add a space for the title
+// TODO - make the 'add user' button work, and show the list of users in the document
 
 export default function Document() {
 	const { data: currUser } = useCurrentUser();
 	const { docID } = useParams();
+	const { showModal } = modalStore();
 
 	// 1. Provider needs docID. If docID changes, you need a new connection.
 	const provider = useMemo(() => {
@@ -86,6 +95,7 @@ export default function Document() {
 
 	return (
 		<div className="min-h-screen bg-zinc-900 flex flex-col items-center p-5">
+			{showModal && <InviteModal />}
 			<div className="w-full border border-slate-700 rounded-md p-3">
 				<Toolbar editor={editor} />
 			</div>
