@@ -1,10 +1,6 @@
-Got it! Here’s a cleaned-up and secure README draft for **Insomnia**, with sensitive values removed but all the necessary environment variables, setup instructions, and an explanation of how the tech stack works:
-
----
-
 # Insomnia – A Hub for Late-Night Writers
 
-**Insomnia** is a Google Docs clone built for collaborative writing in real time. It leverages modern web technologies including **React**, **Nest.js**, **Tailwind**, **MongoDB**, **Yjs**, **Hocuspocus**, **Tiptap**, and **Socket.IO** to create a seamless, multi-user editing experience.
+**Insomnia** is a Google Docs clone built for collaborative writing in real-time. It leverages modern web technologies including **React**, **Nest.js**, **Tailwind**, **MongoDB**, **Yjs**, **Hocuspocus**, **Tiptap**, and **Socket.IO** to create a seamless, multi-user editing experience.
 
 ---
 
