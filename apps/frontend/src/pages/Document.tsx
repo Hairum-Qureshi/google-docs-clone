@@ -12,6 +12,7 @@ import "../css/index.css";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import TextAlign from "@tiptap/extension-text-align";
 
 // ! if you're typing on the first line, the caret seems to get cut off from the top
 
@@ -62,6 +63,9 @@ export default function Document() {
 					caret.appendChild(label);
 					return caret;
 				}
+			}),
+			TextAlign.configure({
+				types: ["heading", "paragraph"]
 			})
 		],
 		[provider, currUser]
@@ -81,16 +85,12 @@ export default function Document() {
 	if (!editor) return null;
 
 	return (
-		<div className="min-h-screen max-h-auto bg-zinc-900">
-			<div className="p-10">
-				<div className="m-auto p-3 flex w-2/3 bg-white tr-rounded-md tl-rounded-md">
-					<Toolbar editor={editor} />
-				</div>
-				<div className="w-2/3 outline-0 border-0 bg-white p-2 h-[80vh] overflow-hidden m-auto">
-					<div className="mx-10 h-full">
-						<TipTapEditor editor={editor} />
-					</div>
-				</div>
+		<div className="min-h-screen bg-zinc-900 flex flex-col items-center p-5">
+			<div className="w-full border border-slate-700 rounded-md p-3">
+				<Toolbar editor={editor} />
+			</div>
+			<div className="w-2/3 bg-white p-4 h-[80vh] overflow-hidden mt-6">
+				<TipTapEditor editor={editor} />
 			</div>
 		</div>
 	);
