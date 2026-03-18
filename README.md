@@ -72,6 +72,7 @@ VITE_FIREBASE_STORAGE_BUCKET=<your Firebase storage bucket>
 VITE_FIREBASE_MESSAGING_SENDER_ID=<your Firebase messaging sender id>
 VITE_FIREBASE_APP_ID=<your Firebase app ID>
 VITE_BACKEND_URL=http://localhost:4000
+VITE_VITE_HOCUSPOCUS_WEBSOCKET=ws://localhost:8000
 ```
 
 #### backend
