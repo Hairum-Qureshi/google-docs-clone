@@ -121,21 +121,21 @@ This clears both the Node modules and Vite cache, forcing Vite to rebuild its de
 1. Start the backend:
 
 ```bash
-cd backend
+cd apps/backend
 npm run dev
 ```
 
 2. Start the Yjs/Hocuspocus server:
 
 ```bash
-cd yjs-backend
+cd apps/yjs-backend
 npm run dev
 ```
 
 3. Start the frontend:
 
 ```bash
-cd frontend
+cd apps/frontend
 npm run dev
 ```
 
