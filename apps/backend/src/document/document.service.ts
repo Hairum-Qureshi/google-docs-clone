@@ -11,8 +11,10 @@ export class DocumentService {
     const newDoc = new this.docModel({
       authorUID: userID,
       title: 'Untitled Document',
+      editors: [userID], // by default, the creator of the document is also an editor
     });
     await newDoc.save();
+
     return newDoc._id;
   }
 
