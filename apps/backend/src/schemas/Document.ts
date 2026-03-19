@@ -12,17 +12,8 @@ export class Doc {
   @Prop({ type: Buffer })
   content: Buffer;
 
-  @Prop({ type: [String], default: [], ref: 'User' })
-  collaborators: string[];
-
   @Prop({ type: Boolean, default: false })
   isPublic: boolean;
-
-  @Prop({ type: [String], default: [], ref: 'User' })
-  editors: string[];
-
-  @Prop({ type: [String], default: [], ref: 'User' })
-  viewers: string[];
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
