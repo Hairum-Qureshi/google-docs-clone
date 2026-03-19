@@ -4,6 +4,14 @@ import { DocumentController } from './document.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Doc, DocSchema } from 'src/schemas/Document';
+import {
+  DocumentPermission,
+  DocumentPermissionSchema,
+} from 'src/schemas/DocumentPermission';
+import {
+  DocumentCollaborator,
+  DocumentCollaboratorSchema,
+} from 'src/schemas/DocumentCollaborator';
 
 @Module({
   providers: [DocumentService],
@@ -13,6 +21,14 @@ import { Doc, DocSchema } from 'src/schemas/Document';
       {
         name: Doc.name,
         schema: DocSchema,
+      },
+      {
+        name: DocumentPermission.name,
+        schema: DocumentPermissionSchema,
+      },
+      {
+        name: DocumentCollaborator.name,
+        schema: DocumentCollaboratorSchema,
       },
     ]),
     AuthModule,
