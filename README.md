@@ -83,6 +83,8 @@ NODE_ENV=development
 FRONTEND_URL=http://localhost:5173
 MONGO_URI=<your MongoDB connection string>
 JWT_SECRET=<secret for JWT auth>
+RESEND_API_KEY=<your Resend API key>
+FROM_EMAIL=<your from email>
 JWT_EXPIRES=<expiry duration>
 FIREBASE_SERVICE_ACCOUNT=<your firebase service account JSON string>
 ```
