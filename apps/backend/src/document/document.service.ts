@@ -2,18 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Doc, DocDocument } from 'src/schemas/Document';
+import { DocumentCollaboratorDocument } from 'src/schemas/DocumentCollaborator';
+import { DocumentCollaborator } from 'src/schemas/DocumentCollaborator';
+import {
+  DocumentPermission,
+  DocumentPermissionDocument,
+} from 'src/schemas/DocumentPermission';
 
 @Injectable()
 export class DocumentService {
-  constructor(@InjectModel(Doc.name) private docModel: Model<DocDocument>) {}
+  constructor(
+    @InjectModel(Doc.name) private docModel: Model<DocDocument>,
+    @InjectModel(DocumentPermission.name)
+    private documentPermissionModel: Model<DocumentPermissionDocument>,
+    @InjectModel(DocumentCollaborator.name)
+    private documentCollaboratorModel: Model<DocumentCollaboratorDocument>,
+  ) {}
 
   async createDocument(userID: string) {
     const newDoc = new this.docModel({
       authorUID: userID,
       title: 'Untitled Document',
-      editors: [userID], // by default, the creator of the document is also an editor
     });
     await newDoc.save();
+
+    // We don't need to create a new permission or collaborator document here because the author of the document will automatically have access to the document as the owner, and we can just check for that in our guards when they try to access the document by ID. We only need to create new permission and collaborator documents when we add collaborators to the document, which will be handled in a separate route and service method.
 
     return newDoc._id;
   }
@@ -30,6 +43,10 @@ export class DocumentService {
   async getDocumentByID(docID: string) {
     const document = await this.docModel.findById(docID);
     return document;
+  }
+
+  async addCollaborators(docID: string, collaborators: string[]) {
+    // logic here
   }
 
   async updateDocumentTitle(docID: string, title: string) {
