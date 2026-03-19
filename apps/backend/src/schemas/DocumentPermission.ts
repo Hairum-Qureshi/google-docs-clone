@@ -20,5 +20,6 @@ export class DocumentPermission {
 }
 
 SchemaFactory.createForClass(DocumentPermission);
-export const DocumentPermissionSchema = SchemaFactory.createForClass(DocumentPermission);
+export const DocumentPermissionSchema =
+  SchemaFactory.createForClass(DocumentPermission);
 export type DocumentPermissionDocument = HydratedDocument<DocumentPermission>;
