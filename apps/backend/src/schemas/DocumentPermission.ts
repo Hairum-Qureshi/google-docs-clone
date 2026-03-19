@@ -9,7 +9,7 @@ export class DocumentPermission {
   @Prop({ type: String, ref: 'Doc' })
   docID: string;
 
-  @Prop({ type: String, enum: ['editor', 'viewer'] })
+  @Prop({ type: String, enum: ['EDITOR', 'VIEWER'] })
   role: string;
 
   @Prop({ type: Date, default: Date.now })
