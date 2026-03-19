@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import * as admin from 'firebase-admin';
 import { JwtService } from '@nestjs/jwt';
 import { User, UserDocument } from '../schemas/User';
-import { UserPayload } from 'src/types';
+import type { UserPayload } from 'src/types/user-payload.type';
 
 @Injectable()
 export class AuthService {

@@ -13,7 +13,7 @@ import express from 'express';
 import type { Response, CookieOptions } from 'express';
 import { BearerToken } from 'src/decorators/bearerToken.decorator';
 import { CurrentUser } from 'src/decorators/currentUser.decorator';
-import * as types from 'src/types';
+import type { UserPayload } from 'src/types/user-payload.type';
 
 @Controller('api/auth')
 export class AuthController {
@@ -50,7 +50,7 @@ export class AuthController {
 
   @Get('current-user')
   @UseGuards(AuthGuard())
-  getCurrentUser(@CurrentUser() user: types.UserPayload): types.UserPayload {
+  getCurrentUser(@CurrentUser() user: UserPayload): UserPayload {
     return this.authService.getCurrentUser(user);
   }
 }

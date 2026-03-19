@@ -10,7 +10,7 @@ import {
 import { DocumentService } from './document.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/currentUser.decorator';
-import * as types from 'src/types';
+import type { UserPayload } from 'src/types/user-payload.type';
 
 @Controller('api/document')
 export class DocumentController {
@@ -18,13 +18,13 @@ export class DocumentController {
 
   @Post('new')
   @UseGuards(AuthGuard())
-  async createDocument(@CurrentUser() user: types.UserPayload) {
+  async createDocument(@CurrentUser() user: UserPayload) {
     return await this.documentService.createDocument(user._id);
   }
 
   @Get('all')
   @UseGuards(AuthGuard())
-  async getAllDocuments(@CurrentUser() user: types.UserPayload) {
+  async getAllDocuments(@CurrentUser() user: UserPayload) {
     return this.documentService.getAllDocuments(user._id);
   }
 
