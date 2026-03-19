@@ -6,7 +6,7 @@ export class Doc {
   @Prop({ type: String, ref: 'User' })
   authorUID: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, default: 'Untitled Document' })
   title: string;
 
   @Prop({ type: Buffer })
@@ -17,6 +17,12 @@ export class Doc {
 
   @Prop({ type: Boolean, default: false })
   isPublic: boolean;
+
+  @Prop({ type: [String], default: [], ref: 'User' })
+  editors: string[];
+
+  @Prop({ type: [String], default: [], ref: 'User' })
+  viewers: string[];
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
