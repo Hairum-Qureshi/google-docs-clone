@@ -140,11 +140,3 @@ npm run dev
 ```
 
 Now open your browser at `http://localhost:5173` (or your configured frontend URL) and start collaborating!
-
----
-
-This README gives contributors everything they need: a conceptual overview, environment setup, cache troubleshooting, and safe guidance on handling sensitive variables.
-
----
-
-If you want, I can also **add a small diagram or bullet workflow** showing how Tiptap → Yjs → Hocuspocus → Socket.IO → Backend → DB all connect for collaboration—it makes the README much easier for new developers to understand visually. Do you want me to add that?
