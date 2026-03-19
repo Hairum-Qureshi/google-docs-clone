@@ -30,7 +30,7 @@
 
 ```bash
 git clone <repo-url>
-cd insomnia
+cd google-docs-clone
 ```
 
 ### 2. Install Dependencies
