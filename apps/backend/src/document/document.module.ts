@@ -13,6 +13,7 @@ import {
   DocumentCollaboratorSchema,
 } from 'src/schemas/DocumentCollaborator';
 import { User, UserSchema } from 'src/schemas/User';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   providers: [DocumentService],
@@ -37,6 +38,7 @@ import { User, UserSchema } from 'src/schemas/User';
       },
     ]),
     AuthModule,
+    EmailModule,
   ],
 })
 export class DocumentModule {}
