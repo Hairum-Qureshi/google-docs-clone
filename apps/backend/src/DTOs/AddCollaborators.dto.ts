@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Role } from 'src/enums/roles.enum';
 
 export class AddDocumentCollaboratorsDTO {
   @IsNotEmpty()
@@ -6,5 +7,5 @@ export class AddDocumentCollaboratorsDTO {
   title: string;
 
   @IsNotEmpty()
-  collaborators: { email: string; role: string }[];
+  collaborators: { email: string; role: Role }[];
 }
