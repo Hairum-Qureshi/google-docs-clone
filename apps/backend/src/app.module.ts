@@ -12,7 +12,9 @@ import { EmailModule } from './email/email.module';
   imports: [
     AuthModule,
     FirebaseModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(process.env.MONGO_URI!),
     DocumentModule,
     EmailModule,
