@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AddDocumentCollaboratorsDTO } from 'src/DTOs/AddCollaborators.dto';
+import { EmailService } from 'src/email/email.service';
 import { Doc, DocDocument } from 'src/schemas/Document';
 import { DocumentCollaboratorDocument } from 'src/schemas/DocumentCollaborator';
 import { DocumentCollaborator } from 'src/schemas/DocumentCollaborator';
@@ -8,6 +10,7 @@ import {
   DocumentPermission,
   DocumentPermissionDocument,
 } from 'src/schemas/DocumentPermission';
+import { User, UserDocument } from 'src/schemas/User';
 
 @Injectable()
 export class DocumentService {
@@ -17,6 +20,8 @@ export class DocumentService {
     private documentPermissionModel: Model<DocumentPermissionDocument>,
     @InjectModel(DocumentCollaborator.name)
     private documentCollaboratorModel: Model<DocumentCollaboratorDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private emailService: EmailService,
   ) {}
 
   async createDocument(userID: string) {
@@ -56,8 +61,65 @@ export class DocumentService {
     return document;
   }
 
-  async addCollaborators(docID: string, collaborators: string[]) {
-    // logic here
+  async addCollaborators(
+    docID: string,
+    documentCollabData: AddDocumentCollaboratorsDTO,
+    currUserEmail: string,
+  ) {
+    const notFoundUsers: string[] = [];
+    const { collaborators, title } = documentCollabData;
+
+    for (const collaborator of collaborators) {
+      const { email, role } = collaborator;
+
+      const user = await this.userModel.findOne({ email });
+
+      if (!user) {
+        notFoundUsers.push(email);
+      } else {
+        const alreadyCollaborator =
+          await this.documentCollaboratorModel.findOne({
+            docID,
+            userID: user._id,
+          });
+
+        console.log('ran');
+
+        if (!alreadyCollaborator && user.email !== currUserEmail) {
+          console.log('ran 2');
+
+          const newCollaborator = new this.documentCollaboratorModel({
+            docID,
+            userID: user._id,
+            role,
+          });
+
+          await newCollaborator.save();
+
+          const newPermission = new this.documentPermissionModel({
+            docID,
+            userID: user._id,
+            role,
+          });
+
+          await newPermission.save();
+
+          await this.emailService.sendInviteEmails(
+            email,
+            docID,
+            `${user.firstName} ${user.lastName}`,
+            title,
+            role,
+          );
+        }
+      }
+    }
+
+    if (notFoundUsers.length)
+      return (
+        'The following users were not found and could not be added as collaborators: ' +
+        notFoundUsers.join(', ')
+      );
   }
 
   async updateDocumentTitle(docID: string, title: string) {
@@ -74,7 +136,7 @@ export class DocumentService {
     return await this.docModel.findByIdAndUpdate(
       docID,
       { content }, // 'content' in your Schema should be Type: Buffer
-      { new: true },
+      { returnDocument: 'after' },
     );
   }
 }
