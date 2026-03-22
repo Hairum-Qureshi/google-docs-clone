@@ -8,5 +8,6 @@ import { ResendService } from './resend.service';
   providers: [EmailService, ResendService],
   controllers: [EmailController],
   imports: [AuthModule],
+  exports: [EmailService],
 })
 export class EmailModule {}
