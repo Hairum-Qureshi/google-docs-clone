@@ -11,6 +11,7 @@ import { Role } from 'src/enums/roles.enum';
 import { Doc, DocDocument } from 'src/schemas/Document';
 import { DocumentPermission } from 'src/schemas/DocumentPermission';
 import { Reflector } from '@nestjs/core';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Injectable()
 export class HasRolePermissions implements CanActivate {
@@ -25,7 +26,7 @@ export class HasRolePermissions implements CanActivate {
     const docID: string = context.switchToHttp().getRequest().params.docID;
     const userID: string = context.switchToHttp().getRequest().user._id;
     const roles: Role[] = this.reflector.get<Role[]>(
-      'roles',
+      Roles, // Roles decorator
       context.getHandler(),
     );
 
@@ -37,13 +38,14 @@ export class HasRolePermissions implements CanActivate {
 
     // first we need to check whether the doc exists
     if (!document) throw new NotFoundException('Document not found');
-    if (!userPermission || document.authorUID !== userID)
+
+    if (!userPermission && document.authorUID !== userID)
       throw new ForbiddenException('You do not have access to this document');
 
     // next we need to check whether if the user is a document author or editor; if so, grant them access to the document; otherwise, throw a forbidden exception
     if (
       document.authorUID === userID ||
-      roles.includes(userPermission.role as Role)
+      roles.includes(userPermission?.role as Role)
     ) {
       return true;
     }
