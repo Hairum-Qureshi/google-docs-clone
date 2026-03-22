@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { modalStore } from "../store/modalStore";
 import Tag from "./Tag";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export default function InviteModal() {
 	const { setShowModal } = modalStore();
 	const [emails, setEmails] = useState<string[]>([]);
 	const [email, setEmail] = useState("");
 	const [role, setRole] = useState("viewer");
+	const { data: currUserData } = useCurrentUser();
 
 	// TODO - will need to add verification (most likely from the backend) when adding users to the document. Will need to check if the newly added users exceed the max user limit (i.e. if there are 50 users in the document and the user tries adding another 60 users, we should show an error message that only 50 more users can be added). Will also need to add a way to display the list of added users (probably in the form of tags) and a way to remove any added user before sending out the invites.
-
-	function removeEmail(index: number) {
-		setEmails(prev => prev.filter((_, i) => i !== index));
-	}
 
 	return (
 		<div className="fixed inset-0 z-10 flex items-center justify-center">
@@ -44,6 +42,10 @@ export default function InviteModal() {
 
 								if (!/\S+@\S+\.\S+/.test(email)) {
 									return alert("Please enter a valid email address.");
+								}
+
+								if (email === currUserData?.email) {
+									return alert("You cannot add yourself as a collaborator.");
 								}
 
 								if (emails.length >= 100) {
@@ -84,7 +86,12 @@ export default function InviteModal() {
 						</p>
 					) : (
 						emails.map((email, index) => (
-							<div onClick={() => removeEmail(index)} key={index}>
+							<div
+								onClick={() =>
+									setEmails(prev => prev.filter((_, i) => i !== index))
+								}
+								key={index}
+							>
 								<Tag email={email} />
 							</div>
 						))
