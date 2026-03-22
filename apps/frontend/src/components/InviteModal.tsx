@@ -102,6 +102,7 @@ export default function InviteModal() {
 					<button
 						className="px-4 py-2 rounded 
 						bg-blue-600 hover:bg-blue-500 text-white hover:cursor-pointer"
+						disabled={emails.length ? false : !email}
 					>
 						Send Invite
 					</button>
