@@ -33,11 +33,22 @@ export class DocumentService {
 
   async getAllDocuments(userID: string) {
     // this accounts for documents other users have added them to as a collaborator, as well as documents they have created themselves
-    return await this.docModel
+    const SELECT_FIELDS = '_id title authorUID isPublic createdAt updatedAt';
+
+    const createdDocuments = await this.docModel
+      .find({ authorUID: userID })
+      .select(SELECT_FIELDS);
+
+    const addedToDocuments = await this.documentCollaboratorModel
       .find({
-        $or: [{ authorUID: userID }, { collaborators: { $in: [userID] } }],
+        userID,
       })
-      .select('-collaborators -isPublic -__v');
+      .select(SELECT_FIELDS);
+
+    return {
+      createdDocuments,
+      addedToDocuments,
+    };
   }
 
   async getDocumentByID(docID: string) {
