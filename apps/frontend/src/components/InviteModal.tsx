@@ -73,19 +73,22 @@ export default function InviteModal() {
 					Max 100 users per document.
 				</p>
 				<div className="flex flex-wrap gap-3 mb-4 max-h-40 overflow-y-auto">
-					<p className="text-sm text-slate-300 w-full text-center italic my-2">
-						If you're planning to add more than one user, please enter their
-						email, select their role, then hit enter to add them to the list.
-						You can remove any added email by clicking the "x" on the tag.
-						Please play close attention to the email addresses you enter and
-						roles you assign, as we won't ask for confirmation before sending
-						out the invites.
-					</p>
-					{emails.map((email, index) => (
-						<div onClick={() => removeEmail(index)} key={index}>
-							<Tag email={email} />
-						</div>
-					))}
+					{!emails.length ? (
+						<p className="text-sm text-slate-300 w-full text-center italic my-2">
+							If you're planning to add more than one user, please enter their
+							email, select their role, then hit enter to add them to the list.
+							You can remove any added email by clicking the "x" on the tag.
+							Please play close attention to the email addresses you enter and
+							roles you assign, as we won't ask for confirmation before sending
+							out the invites.
+						</p>
+					) : (
+						emails.map((email, index) => (
+							<div onClick={() => removeEmail(index)} key={index}>
+								<Tag email={email} />
+							</div>
+						))
+					)}
 				</div>
 				<div className="flex justify-end space-x-2">
 					<button
