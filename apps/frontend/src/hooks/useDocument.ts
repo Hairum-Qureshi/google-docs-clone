@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Document } from "../interfaces";
-import type { DocumentType, MarkType, NodeType, TextType } from "@tiptap/core";
+import type { UserDocument } from "../interfaces";
 
 interface UseDocumentHook {
 	createDocumentMutate: () => void;
-	allDocuments: Document[] | undefined;
-	document: Document | undefined;
+	allDocuments:
+		| { createdDocuments: UserDocument[]; addedToDocuments: UserDocument[] }
+		| undefined;
+	document: UserDocument | undefined;
 	updateDocumentTitleMutate: (title: string) => void;
 	updateDocumentContentMutate: (content: string) => void;
 }
@@ -50,6 +51,7 @@ export default function useDocument(): UseDocumentHook {
 						withCredentials: true
 					}
 				);
+
 				return response.data;
 			} catch (error) {
 				console.error(error);
