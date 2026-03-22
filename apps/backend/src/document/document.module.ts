@@ -12,6 +12,7 @@ import {
   DocumentCollaborator,
   DocumentCollaboratorSchema,
 } from 'src/schemas/DocumentCollaborator';
+import { User, UserSchema } from 'src/schemas/User';
 
 @Module({
   providers: [DocumentService],
@@ -29,6 +30,10 @@ import {
       {
         name: DocumentCollaborator.name,
         schema: DocumentCollaboratorSchema,
+      },
+      {
+        name: User.name,
+        schema: UserSchema,
       },
     ]),
     AuthModule,
