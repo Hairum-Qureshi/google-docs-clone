@@ -12,6 +12,9 @@ export class Doc {
   @Prop({ type: Buffer })
   content: Buffer;
 
+  @Prop({ type: String })
+  contentText: string;
+
   @Prop({ type: Boolean, default: false })
   isPublic: boolean;
 
