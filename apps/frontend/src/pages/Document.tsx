@@ -16,12 +16,14 @@ import TextAlign from "@tiptap/extension-text-align";
 import { modalStore } from "../store/modalStore";
 import InviteModal from "../components/InviteModal";
 
-// ! if you're typing on the first line, the caret seems to get cut off from the top
-
+// ! Make it so that you can click anywhere in the doc and it'll focus the textarea instead of having to click at the top
 // ! Resolve issue where if you're the only one in a document, autosave doesn't work
+// ! Resolve issue where if you open another tab and start typing, it'll show your user caret when it should only show the other user's caret
 // ! For some reason you have to click at the top to get the textarea focused
 // TODO - add the 'saving...' text when the document is being saved, and 'saved' text when it finishes saving.
 // TODO - add a space for the title
+// TODO - populate it with the actual saved document data
+// TODO - have it so that each user gets assignment a different caret color when they join the document
 // TODO - make the 'add user' button work, and show the list of users in the document
 
 export default function Document() {
@@ -99,7 +101,7 @@ export default function Document() {
 			<div className="w-full border border-slate-700 rounded-md p-3">
 				<Toolbar editor={editor} />
 			</div>
-			<div className="w-2/3 bg-white p-4 h-[80vh] overflow-hidden mt-6">
+			<div className="w-2/3 bg-white p-4 min-h-[80vh] max-h-auto overflow-hidden mt-6">
 				<TipTapEditor editor={editor} />
 			</div>
 		</div>
