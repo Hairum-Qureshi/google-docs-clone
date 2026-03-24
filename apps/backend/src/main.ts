@@ -7,9 +7,17 @@ import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use(
+    express.raw({
+      type: 'application/octet-stream',
+      limit: '10mb',
+    }),
+  );
 
   app.useGlobalPipes(new ValidationPipe());
 
