@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()
 export class Doc {
@@ -12,8 +12,8 @@ export class Doc {
   @Prop({ type: Buffer })
   content: Buffer;
 
-  @Prop({ type: String })
-  contentText: string;
+  @Prop({ type: Object, default: {} })
+  contentText: MongooseSchema.Types.Mixed;
 
   @Prop({ type: Boolean, default: false })
   isPublic: boolean;
