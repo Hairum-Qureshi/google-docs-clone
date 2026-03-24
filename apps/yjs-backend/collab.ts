@@ -41,7 +41,7 @@ const server = new Hocuspocus({
 				try {
 					await axios.patch(
 						`${process.env.NEST_BACKEND}/api/document/${documentName}/update-content`,
-						state, // Send the raw Uint8Array directly, NOT an object
+						Buffer.from(state),
 						{
 							headers: {
 								"Content-Type": "application/octet-stream" // Tells NestJS this is binary
